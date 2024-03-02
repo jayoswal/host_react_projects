@@ -27,7 +27,7 @@ public class UploadController {
 	@PostMapping("/upload")
 	ResponseEntity<ApiResponse>createGitRepo(@RequestBody UrlPayload url) throws InvalidRemoteException, TransportException, GitAPIException
 	{
-		ApiResponse service = uploadService.createService(url, new File(System.getProperty("user.dir")+"/new8"));
+		ApiResponse service = uploadService.createService(url, new File(System.getProperty("user.dir")+"/new9"));
 		return new ResponseEntity<ApiResponse>(service,HttpStatus.OK);
 	}
 	
