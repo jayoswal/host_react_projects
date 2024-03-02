@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.upload.Service.uploadService;
 import com.backend.upload.payloads.ApiResponse;
+import com.backend.upload.payloads.UrlPayload;
 
 @RequestMapping
 @RestController
 public class UploadController {
 	@Autowired
-	uploadService uploadService;
+	uploadService uploadService; 
 	
 	@PostMapping("/upload")
-	ResponseEntity<ApiResponse>createGitRepo(@RequestBody String url) throws InvalidRemoteException, TransportException, GitAPIException
+	ResponseEntity<ApiResponse>createGitRepo(@RequestBody UrlPayload url) throws InvalidRemoteException, TransportException, GitAPIException
 	{
-		
-		ApiResponse service = uploadService.createService(url, new File(System.getProperty("user.dir")+"/new6"));
+		ApiResponse service = uploadService.createService(url, new File(System.getProperty("user.dir")+"/new8"));
 		return new ResponseEntity<ApiResponse>(service,HttpStatus.OK);
 	}
 	

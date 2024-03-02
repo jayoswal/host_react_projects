@@ -10,15 +10,16 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.springframework.stereotype.Service;
 
 import com.backend.upload.payloads.ApiResponse;
+import com.backend.upload.payloads.UrlPayload;
 
 @Service
 public class uploadService {
 	
-public ApiResponse createService(String url, File directory) throws InvalidRemoteException, TransportException, GitAPIException
+public ApiResponse createService(UrlPayload url, File directory) throws InvalidRemoteException, TransportException, GitAPIException
 {
-	
+	String urlString = url.getUrl();
 	Git git = Git.cloneRepository()
-			  .setURI(url)
+			  .setURI(urlString)
 			  .setDirectory(directory)
 			  .call();
 	System.out.println(url);
