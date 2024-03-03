@@ -7,20 +7,20 @@ public class UrlPayload {
 	private String Url;
 
 	public String getUrl() {
-		return Url;
+		return this.Url;
 	}
 
 	public void setUrl(String url) {
-		Url = url;
+		this.Url = url;
 	}
 
 	public UrlPayload(String url) {
 		super();
-		Url = url;
+		this.Url = url;
 	}
 
 	public UrlPayload() {
 		super();
 	}
-	
+
 }

@@ -1,8 +1,5 @@
 package com.backend.upload.controller;
 
-import java.io.File;
-import java.net.URL;
-
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -22,16 +19,14 @@ import com.backend.upload.payloads.UrlPayload;
 @RestController
 public class UploadController {
 	@Autowired
-	uploadService uploadService; 
-	
+	uploadService uploadService;
+
 	@PostMapping("/upload")
-	ResponseEntity<ApiResponse>createGitRepo(@RequestBody UrlPayload url) throws InvalidRemoteException, TransportException, GitAPIException
-	{
-		ApiResponse service = uploadService.createService(url, new File(System.getProperty("user.dir")+"/new9"));
-		return new ResponseEntity<ApiResponse>(service,HttpStatus.OK);
+	ResponseEntity<ApiResponse> createGitRepo(@RequestBody UrlPayload url)
+			throws InvalidRemoteException, TransportException, GitAPIException {
+		// TODO - validate input string
+		ApiResponse uploadServiceResponse = uploadService.createService(url);
+		return new ResponseEntity<ApiResponse>(uploadServiceResponse, HttpStatus.OK);
 	}
-	
-	
-	
 
 }

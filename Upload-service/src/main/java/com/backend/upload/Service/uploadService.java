@@ -1,7 +1,6 @@
 package com.backend.upload.Service;
 
 import java.io.File;
-import java.net.URL;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -11,21 +10,29 @@ import org.springframework.stereotype.Service;
 
 import com.backend.upload.payloads.ApiResponse;
 import com.backend.upload.payloads.UrlPayload;
+import com.backend.upload.utils.generateId;
 
 @Service
 public class uploadService {
-	
-public ApiResponse createService(UrlPayload url, File directory) throws InvalidRemoteException, TransportException, GitAPIException
-{
-	String urlString = url.getUrl();
-	Git git = Git.cloneRepository()
-			  .setURI(urlString)
-			  .setDirectory(directory)
-			  .call();
-	System.out.println(url);
-	return new ApiResponse("Success!", true);
-	
-}
 
-// .setCredentialsProvider( new UsernamePasswordCredentialsProvider( "user", "password" ))
+	public ApiResponse createService(UrlPayload url)
+			throws InvalidRemoteException, TransportException, GitAPIException {
+		String urlString = url.getUrl();
+		String id = generateId.generateRandomId();
+
+		// TODO - App Constants
+		File directory = new File(
+				System.getProperty("user.dir") + File.separatorChar + "repoFiles" + File.separatorChar + id);
+		System.out.println(directory.getAbsolutePath());
+		Git.cloneRepository().setURI(urlString).setDirectory(directory).call();
+
+		// TODO -publish to redis queue
+		return new ApiResponse(id, true);
+
+		// to clone from private repo
+		// .setCredentialsProvider( new UsernamePasswordCredentialsProvider( "user",
+		// "password" ))
+
+	}
+
 }
