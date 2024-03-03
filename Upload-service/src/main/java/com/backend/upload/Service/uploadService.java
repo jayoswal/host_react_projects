@@ -23,7 +23,6 @@ public class uploadService {
 		// TODO - App Constants
 		File directory = new File(
 				System.getProperty("user.dir") + File.separatorChar + "repoFiles" + File.separatorChar + id);
-		System.out.println(directory.getAbsolutePath());
 		Git.cloneRepository().setURI(urlString).setDirectory(directory).call();
 
 		// TODO -publish to redis queue
