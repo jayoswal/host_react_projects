@@ -1,5 +1,7 @@
 package com.backend.upload.controller;
 
+import java.io.IOException;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -23,7 +25,7 @@ public class UploadController {
 
 	@PostMapping("/upload")
 	ResponseEntity<ApiResponse> createGitRepo(@RequestBody UrlPayload url)
-			throws InvalidRemoteException, TransportException, GitAPIException {
+			throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 		// TODO - validate input string
 		ApiResponse uploadServiceResponse = uploadService.createService(url);
 		return new ResponseEntity<ApiResponse>(uploadServiceResponse, HttpStatus.OK);
