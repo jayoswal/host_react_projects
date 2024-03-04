@@ -19,6 +19,9 @@ public class uploadService {
 	@Autowired
 	private RedisQueueService redisQueueService;
 
+	@Autowired
+	private ZipDirectoryService zipDirectoryService;
+
 	public ApiResponse createService(UrlPayload url)
 			throws InvalidRemoteException, TransportException, GitAPIException {
 		String urlString = url.getUrl();
@@ -31,6 +34,18 @@ public class uploadService {
 		// to clone from private repo
 		// .setCredentialsProvider( new UsernamePasswordCredentialsProvider( "user",
 		// "password" ))
+
+		// TODO - zip the directory to /repoZip/id.zip
+		String zipRepoFilesPath = new File(
+				System.getProperty("user.dir") + File.separatorChar + "zipRepo" + File.separatorChar + id + ".zip")
+				.getAbsolutePath();
+		// TODO - find the parent directory where package.json is there ... because code
+		// can be inside folder as well
+		if (zipDirectoryService.zip(directory.getAbsolutePath(), zipRepoFilesPath)) {
+
+		}
+
+		// TODO - push zip to object storage (file: zipRepoFilesPath)
 
 		// TODO -publish to redis queue
 		redisQueueService.publish(id);
