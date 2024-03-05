@@ -39,7 +39,6 @@ class QueueListener implements ApplicationRunner {
 		while (true) {
 			String id = redisTemplate.opsForList().rightPop("uploaded-queue");
 			if (id != null) {
-				System.out.println("Received element from Redis queue: " + id);
 				buildService.downloadAndBuildAndDeploy(id);
 			}
 			try {

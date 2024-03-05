@@ -17,14 +17,15 @@ public class BuildService {
 
 	@Autowired
 	private AwsS3Service amazon;
-	
-	
+
 	public void downloadAndBuildAndDeploy(String id) throws IOException {
-		
-		if(true) {	
-			
+
+		if (true) {
+
+			// TODO - unzip the file
+
 		}
-		
+
 	}
 
 	// TODO - Download the zip from aws to locally repoZip/id.zip
@@ -48,8 +49,8 @@ public class BuildService {
 		Files.copy(inputStream, Paths.get(downloadFilePath), StandardCopyOption.REPLACE_EXISTING);
 
 		inputStream.close();
-		System.out.println("Zip Downloaded: " + downloadFilePath);
-		
+//		System.out.println("Zip Downloaded: " + downloadFilePath);
+
 		// TODO -return false in try catch block
 		return true;
 
