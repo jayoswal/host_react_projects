@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.backend.deploy.utils.UnzipUtility;
 
 @Service
 public class BuildService {
@@ -18,12 +19,15 @@ public class BuildService {
 	@Autowired
 	private AwsS3Service amazon;
 
+	String downloadDirectoryPath = System.getProperty("user.dir") + File.separatorChar + "zipRepo";
+
 	public void downloadAndBuildAndDeploy(String id) throws IOException {
 
 		if (true) {
 
-			// TODO - unzip the file
-
+			// TODO - unzip the file: downloadFilePath to location:
+			String zipFilePath = downloadDirectoryPath + File.separatorChar + id + ".zip";
+			UnzipUtility.unzipRepoDir(zipFilePath, id);
 		}
 
 	}
@@ -39,13 +43,13 @@ public class BuildService {
 		S3ObjectInputStream inputStream = s3Object.getObjectContent();
 
 		// Specify the path where you want to save the downloaded zip file
-		String downloadDirectoryPath = System.getProperty("user.dir") + File.separatorChar + "zipRepo";
+
 		// Create the directory if it doesn't exist
 		Files.createDirectories(Paths.get(downloadDirectoryPath));
 
 		// Specify the file path where you want to save the downloaded zip file
-		String downloadFilePath = downloadDirectoryPath + File.separatorChar + id + ".zip";
 
+		String downloadFilePath = downloadDirectoryPath + File.separatorChar + id + ".zip";
 		Files.copy(inputStream, Paths.get(downloadFilePath), StandardCopyOption.REPLACE_EXISTING);
 
 		inputStream.close();
