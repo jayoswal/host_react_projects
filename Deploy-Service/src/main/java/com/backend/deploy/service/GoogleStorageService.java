@@ -1,4 +1,4 @@
-package com.backend.upload.Service;
+package com.backend.deploy.service;
 
 import org.springframework.stereotype.Service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -8,10 +8,13 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.FileList;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
@@ -29,15 +32,60 @@ public class GoogleStorageService {
 		return filePath.toString();
 	}
 
+	public boolean downloadZipFromGDrive(String id) {
+
+		try {
+			Drive drive = createDriveService();
+
+			// Search for the file by name
+			String query = "name='" + id + ".zip" + "' and trashed=false";
+			FileList result = drive.files().list().setQ(query).execute();
+			if (result.getFiles().isEmpty()) {
+				return false;
+			}
+
+			String fileId = result.getFiles().get(0).getId(); // Get the ID of the first file with the specified name
+
+			String downloadZipPath = System.getProperty("user.dir") + File.separatorChar + "repoZip"
+					+ File.separatorChar + id + ".zip";
+
+			// Create the directory if it doesn't exist
+			Files.createDirectories(Paths.get(downloadZipPath).getParent());
+
+			FileOutputStream outputStream = new FileOutputStream(downloadZipPath);
+			drive.files().get(fileId).executeMediaAndDownloadTo(outputStream);
+			outputStream.close();
+
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+//	public String getfiles() throws IOException, GeneralSecurityException {
+//
+//		Drive service = createDriveService();
+//
+//		// Print the names and IDs for up to 10 files.
+//		FileList result = service.files().list().setPageSize(10).execute();
+//		java.util.List<com.google.api.services.drive.model.File> files = result.getFiles();
+//		if (files == null || files.isEmpty()) {
+//			return "No files found.";
+//		} else {
+//			return files.toString();
+//		}
+//	}
+
 	public String uploadZipToGDrive(File file) throws GeneralSecurityException, IOException {
 
 		try {
-			String folderId = "1_aEfcT5JRcBJ7XzKhyFpWjLK0R5Gx_96";
+			String folderId = "";
 			Drive drive = createDriveService();
 			com.google.api.services.drive.model.File fileMetaData = new com.google.api.services.drive.model.File();
 			fileMetaData.setName(file.getName());
 			fileMetaData.setParents(Collections.singletonList(folderId));
-			FileContent mediaContent = new FileContent("image/jpeg", file);
+			FileContent mediaContent = new FileContent("application/zip", file);
 			com.google.api.services.drive.model.File uploadedFile = drive.files().create(fileMetaData, mediaContent)
 					.setFields("id").execute();
 			String imageUrl = "https://drive.google.com/uc?export=view&id=" + uploadedFile.getId();
@@ -49,7 +97,7 @@ public class GoogleStorageService {
 			System.out.println(e.getMessage());
 
 		}
-		return "test-return";
+		return "failed...!!!";
 
 	}
 

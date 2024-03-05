@@ -12,6 +12,13 @@
 	<groupId>com.backend</groupId>
 	<artifactId>Deploy-Service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<exclusions>
+		<exclusion>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</exclusion>
+	</exclusions>
 	<name>Deploy-Service</name>
 	<description>Deploy server for host_react_project_backend</description>
 	<properties>
@@ -37,12 +44,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!-- storage -->
+
 		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-s3</artifactId>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-drive</artifactId>
+			<version>v3-rev20240123-2.0.0</version>
 		</dependency>
-		<!-- /storage -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>2.3.0</version>
+		</dependency>
 
 
 		<dependency>
@@ -52,17 +64,6 @@
 		</dependency>
 	</dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.amazonaws</groupId>
-				<artifactId>aws-java-sdk-bom</artifactId>
-				<version>1.11.780</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<plugins>

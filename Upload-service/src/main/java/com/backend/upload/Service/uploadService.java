@@ -1,8 +1,6 @@
 package com.backend.upload.Service;
 
 import java.io.File;
-import java.io.FileInputStream;
-
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
@@ -10,19 +8,11 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.amazonaws.services.s3.model.AccessControlList;
-import com.amazonaws.services.s3.model.GroupGrantee;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.Permission;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.backend.upload.payloads.ApiResponse;
 import com.backend.upload.payloads.UrlPayload;
 import com.backend.upload.utils.generateId;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.GeneralSecurityException;
 
 @Service
@@ -33,9 +23,6 @@ public class uploadService {
 
 	@Autowired
 	private ZipDirectoryService zipDirectoryService;
-
-	@Autowired
-	private AwsS3Service amazon;
 
 	@Autowired
 	private GoogleStorageService googleStorageService;
@@ -65,28 +52,10 @@ public class uploadService {
 //		System.out.println(org.apache.http.conn.ssl.SSLConnectionSocketFactory.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		// TODO - push zip to object storage (file: zipRepoFilesPath)
 
-		// AWS START
-//		InputStream inputStream = new FileInputStream(zipRepoFiles);
-//		String originalPath = "zipRepo" + File.separatorChar + zipRepoFiles.getName();
-//
-//		final ObjectMetadata md = new ObjectMetadata();
-//		final AccessControlList acl = new AccessControlList();
-//		final byte[] buffer = inputStream.readAllBytes();
-//		final InputStream convertedInputStream = new ByteArrayInputStream(buffer);
-//		md.setContentLength(buffer.length);
-//		md.setContentType("application/zip");
-//		final PutObjectRequest req = new PutObjectRequest(this.amazon.getBucketName(), originalPath,
-//				convertedInputStream, md);
-//		acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
-////        req.setAccessControlList(acl);
-//		PutObjectResult res = this.amazon.getS3client().putObject(req);
-		// AWS END
-
 		// Google drive start
 
 		String message = googleStorageService.uploadZipToGDrive(zipRepoFiles);
-		System.out.println(message);
-		
+
 		// Google drive start
 
 		// TODO -publish to redis queue
