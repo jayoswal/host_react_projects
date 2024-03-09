@@ -1,5 +1,6 @@
 package com.backend.upload.Service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -23,6 +24,9 @@ public class GoogleStorageService {
 	private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 	private static final String SERVICE_ACOUNT_KEY_PATH = getPathToGoodleCredentials();
 
+	@Value("${objectStorage.id}")
+	private String objectStorageId;
+
 	private static String getPathToGoodleCredentials() {
 		String currentDirectory = System.getProperty("user.dir");
 		Path filePath = Paths.get(currentDirectory, "cred.json");
@@ -32,7 +36,7 @@ public class GoogleStorageService {
 	public String uploadZipToGDrive(File file) throws GeneralSecurityException, IOException {
 
 		try {
-			String folderId = "1_aEfcT5JRcBJ7XzKhyFpWjLK0R5Gx_96";
+			String folderId = objectStorageId;
 			Drive drive = createDriveService();
 			com.google.api.services.drive.model.File fileMetaData = new com.google.api.services.drive.model.File();
 			fileMetaData.setName(file.getName());
